@@ -1,22 +1,40 @@
 import * as mongoose from 'mongoose'
 import { IPaymentSchema } from './IPaymentSchema'
-import { ObjectId, ObjectID } from 'bson'
-import { IAddressInfo } from './Types/IAddressInfo';
+import { ObjectID } from 'bson'
 
 const PaymentSchema = new mongoose.Schema<IPaymentSchema>({
-    _id: ObjectID,
-    phone: String,
-    name: String,
-    email: String,
-    gender: Number,
-    earnings: Number,
+    // _id: ObjectID,
     tickets: Number,
-    averageEarnings: Number,
-    lastActivity: Date,
-    firstActivity: Date,
-    transactions: Number,
-    accessSources: Array<String>(),
-    locations: Array<IAddressInfo>()
+    contracts: Array<ObjectID>(),
+    names: Array<{
+        email: String,
+        date: Date,
+        gender: 1,
+        id: ObjectID
+    }>(),
+    email: String,
+    phone: String,
+    gender: Number,
+    firstTransactionTime: Date,
+    lastTransactionTime: Date,
+    city: String,
+
+    ya: Array<String>(),
+    ga: Array<String>(),
+    fb: Array<String>(),
+    vs: Array<String>(),
+
+    transactions: Array<{
+        id: ObjectID,
+        event: String,
+        earnings: Number,
+        ticketsInTransaction: Number,
+        transactionDate: Date,
+        source: String,
+        city: String,
+        zip: String
+    }>(),
+    earnings: Number
 })
 
 export { PaymentSchema };
