@@ -42,4 +42,5 @@ export interface IActionSchema extends Document {
     orderId: Number;
     payment: String;
     isSheet: Boolean;
+    processed: Boolean;
 }

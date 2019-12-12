@@ -52,6 +52,7 @@ const ActionSchema = new mongoose.Schema<IActionSchema>({
     orderId: Number,
     payment: String,
     isSheet: Boolean,
+    processed: Boolean
 });
 
 export { ActionSchema };

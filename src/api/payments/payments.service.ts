@@ -1,14 +1,17 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { IEchoDefault } from './DTO/IEchoDefault';
 import { InjectModel } from '@nestjs/mongoose';
 import { IPaymentSchema } from './Schemas/IPaymentSchema';
 import { Model } from 'mongoose';
 import { IActionSchema } from '../../services/actions/Schemas/IActionSchema';
+import { ObjectID } from 'bson';
 
 @Injectable()
 export class PaymentsService {
     constructor(@InjectModel('t_payments') private readonly paymentSchema: Model<IPaymentSchema>,
-        @InjectModel('buyers') private readonly actionSchema: Model<IActionSchema>) { }
+        @InjectModel('buyers') private readonly actionSchema: Model<IActionSchema>) {
+        this.SampleRun();
+    }
 
     async Synthesize(phone: String): Promise<IEchoDefault<String>> {
         const dailyUser = await this.actionSchema.aggregate()
@@ -125,8 +128,29 @@ export class PaymentsService {
         if (dailyUser)
             await this.paymentSchema.updateOne({ phone: dailyUser.phone }, dailyUser, { upsert: true })
                 .exec()
-                .then(console.log);
+                .then(() =>
+                    Logger.log(`Buyer ${phone} has been updated`))
 
         return null;
+    }
+
+
+    SampleRun() {
+        this.actionSchema.find({ status: 'WIDGET_PAYMENT', processed: { $ne: true } }, { "buyer.phone": true }, async (err, transactions) => {
+            if (err) throw console.error(err);
+            Logger.log(`New sales detected, processing in progress ${transactions.length}`, 'Payments');
+
+            for (let index in transactions) {
+                const transaction = transactions[index];
+                await this.Synthesize(transaction.buyer.phone)
+                    .then(async () => {
+                        await this.actionSchema.updateOne({ _id: new ObjectID(transaction._id) }, { processed: true })
+                            .exec();
+                    });
+            }
+
+            setTimeout(this.SampleRun.bind(this), transactions.length
+                ? 60000 : 1000);
+        }).sort({ date: 1 });
     }
 }

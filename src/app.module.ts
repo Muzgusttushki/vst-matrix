@@ -6,6 +6,9 @@ import { readFileSync } from 'fs';
 import { format } from 'util';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ActionsModule } from './services/actions/actions.module';
+import { PaymentsService } from './api/payments/payments.service';
+import { PaymentSchema } from './api/payments/Schemas/PaymentSchema';
+import { ActionSchema } from './services/actions/Schemas/ActionSchema';
 
 
 const url = format(
