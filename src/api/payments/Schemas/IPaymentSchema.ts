@@ -17,6 +17,7 @@ export interface IPaymentSchema extends Document {
     firstTransactionTime: Date;
     lastTransactionTime: Date,
     city: String;
+    event: String;
 
     ya: String[];
     ga: String[];
@@ -35,4 +36,6 @@ export interface IPaymentSchema extends Document {
     }[];
 
     earnings: Number;
+    wasUsed: Boolean;
+    access: String;
 }

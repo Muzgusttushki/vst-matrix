@@ -18,7 +18,7 @@ const PaymentSchema = new mongoose.Schema<IPaymentSchema>({
     firstTransactionTime: Date,
     lastTransactionTime: Date,
     city: String,
-
+    event: String,
     ya: Array<String>(),
     ga: Array<String>(),
     fb: Array<String>(),
@@ -34,7 +34,10 @@ const PaymentSchema = new mongoose.Schema<IPaymentSchema>({
         city: String,
         zip: String
     }>(),
-    earnings: Number
+
+    earnings: Number,
+    wasUsed: Boolean,
+    access: String
 })
 
 export { PaymentSchema };

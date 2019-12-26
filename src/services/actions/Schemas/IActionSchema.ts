@@ -43,4 +43,5 @@ export interface IActionSchema extends Document {
     payment: String;
     isSheet: Boolean;
     processed: Boolean;
+    access: String;
 }

@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { PaymentSchema } from './Schemas/PaymentSchema';
 import { ActionsModule } from '../../services/actions/actions.module';
 import { ActionSchema } from '../../services/actions/Schemas/ActionSchema';
+import { AssembledFilterSchema } from './Schemas/AssembledFilterSchema';
 
 @Module({
   providers: [PaymentsService],
@@ -13,7 +14,8 @@ import { ActionSchema } from '../../services/actions/Schemas/ActionSchema';
   imports: [
     MongooseModule.forFeature([
       { name: "t_payments", schema: PaymentSchema },
-      { name: "buyers", schema: ActionSchema }
+      { name: "buyers", schema: ActionSchema },
+      { name: "t_paymentsFilters", schema: AssembledFilterSchema }
     ]),
 
     ActionsModule
